@@ -1,0 +1,80 @@
+version : '2.1'
+services:
+   cloudconfigservice:
+       container_name: CloudConfigService
+       image: cloudconfigserver:latest
+       build:
+          context: ./cloud-config-service
+          dockerfile: Dockerfile
+       ports:
+         - "8088:8088"
+       healthcheck:
+        test: ["CMD", "curl", "-c","1", "http://192.168.11.1:8088"]
+        interval: 10s
+        timeout: 30s
+        retries: 2
+
+
+   discoveryservice:
+       container_name: DiscoveryService
+       image: discoveryservice:2.0
+       build:
+          context: ./discovery-service
+          dockerfile: Dockerfile       
+       ports:
+         - "8061:8061"
+       depends_on:
+         - cloudconfigservice
+
+   employeeservice:
+       container_name: EmployeeService
+       image: employeeservice:2.0
+       build:
+          context: ./employee-service
+          dockerfile: Dockerfile
+       ports:
+         - "8090:8090"
+       depends_on:
+         - cloudconfigservice
+         - discoveryservice
+   
+   departmentservice:
+       container_name: DepartmentService
+       image: departmentservice:2.0
+       build:
+          context: ./department-service
+          dockerfile: Dockerfile
+       ports:
+         - "8091:8091" 
+       depends_on:
+         - cloudconfigservice
+         - discoveryservice
+         - employeeservice         
+         
+   organizationservice:
+       container_name: OrganizationService
+       image: organizationservice:2.0
+       build:
+          context: ./organization-service
+          dockerfile: Dockerfile
+       ports:
+         - "8092:8092"   
+       depends_on:
+         - cloudconfigservice
+         - discoveryservice
+         - employeeservice
+   
+   proxyservice:
+       container_name: ProxyService
+       image: proxyservice:2.0
+       build:
+          context: ./proxy-service
+          dockerfile: Dockerfile
+       ports:
+         - "8060:8060"  
+       depends_on:
+         - cloudconfigservice
+         - discoveryservice
+         - employeeservice   
+         - departmentservice
+         - organizationservice         

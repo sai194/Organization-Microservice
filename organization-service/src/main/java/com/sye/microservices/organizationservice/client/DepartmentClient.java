@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.sye.microservices.organizationservice.domain.Department;
 
-@FeignClient(name = "department-service")
+@FeignClient(name = "department-service",url="http://departmentservice:8091")
 public interface DepartmentClient {
 
 	@GetMapping("/organization/{organizationId}")

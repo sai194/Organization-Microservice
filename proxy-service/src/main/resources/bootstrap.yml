@@ -1,9 +1,24 @@
 server:
   port: 8060
-
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discoveryservice:8061/eureka/
 spring:
   application:
     name: proxy-service
   cloud:
     config:
-      uri: http://localhost:8088
+      uri: http://cloudconfigservice:8088
+zuul:
+  routes:
+    department:
+      path: /department/**
+      url: http://departmentservice:8091
+    employee:
+      path: /employee/**
+      url: http://employeeservice:8090
+    organization:
+      path: /organization/**
+      url: http://organizationservice:8092
+      #serviceId: organization-service      
