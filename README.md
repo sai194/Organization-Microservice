@@ -25,13 +25,6 @@ http://localhost:8060/department/2/with-departments-and-employees
 http://localhost:8088/discovery-service/default
 http://localhost:8088/employee-service/default
 
-http://192.168.11.1:8061/
-
-http://192.168.11.1:8060/employee/
-
-http://192.168.11.1:8090/
-
-http://192.168.11.1:8060/department/organization/1/with-employees
 
 docker image build --file=Dockerfile --tag=cloudconfigservice:1.0 .
 
